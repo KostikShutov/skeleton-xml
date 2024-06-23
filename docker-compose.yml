@@ -1,0 +1,12 @@
+services:
+  python-xml:
+    build: .
+    image: python-xml
+    container_name: python-xml-container
+    tty: true
+    privileged: true
+    volumes:
+      - ".:/code"
+    working_dir: /code
+    environment:
+      PYTHONPATH: /code
