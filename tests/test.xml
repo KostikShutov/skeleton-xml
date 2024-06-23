@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Config>
+    <Commands>
+        <Command>
+            <Name>FORWARD</Name>
+            <Params>
+                <Param name="speedFrom"/>
+            </Params>
+        </Command>
+    </Commands>
+    <Controls>
+        <Control>
+            <Name>AUTONOMOUS</Name>
+            <Module>controls.autonomous</Module>
+            <Behaviours>
+                <Behaviour name="friendly"/>
+                <Behaviour name="aggressive"/>
+            </Behaviours>
+        </Control>
+    </Controls>
+    <Drivers>
+        <Driver>
+            <Name>MOTOR</Name>
+            <Module>tests.MotorDriver/MotorDriver/execute</Module>
+            <Params>
+                <Param name="speedTo"/>
+            </Params>
+        </Driver>
+    </Drivers>
+    <Interfaces>
+        <Interface>
+            <Command>FORWARD</Command>
+            <Drivers>
+                <Driver name="MOTOR">
+                    <Params>
+                        <Param paramFrom="speedFrom" paramTo="speedTo"/>
+                    </Params>
+                </Driver>
+            </Drivers>
+        </Interface>
+    </Interfaces>
+</Config>
