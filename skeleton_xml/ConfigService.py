@@ -2,8 +2,6 @@ import importlib
 import xml.etree.ElementTree as ET
 from skeleton_xml.command.Command import Command
 from skeleton_xml.command.CommandsParser import CommandsParser
-from skeleton_xml.control.Control import Control
-from skeleton_xml.control.ControlsParser import ControlsParser
 from skeleton_xml.driver.Driver import Driver
 from skeleton_xml.driver.DriversParser import DriversParser
 from skeleton_xml.interface.Interface import Interface
@@ -16,7 +14,6 @@ class ConfigService:
         root: ET = ET.parse(config).getroot()
 
         self.commands: dict[str, Command] = CommandsParser(root=root).parse()
-        self.controls: dict[str, Control] = ControlsParser(root=root).parse()
         self.drivers: dict[str, Driver] = DriversParser(root=root).parse()
         self.interfaces: dict[str, Interface] = InterfacesParser(root=root).parse()
 

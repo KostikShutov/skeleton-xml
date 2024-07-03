@@ -8,16 +8,6 @@
             </Params>
         </Command>
     </Commands>
-    <Controls>
-        <Control>
-            <Name>AUTONOMOUS</Name>
-            <Module>controls.autonomous</Module>
-            <Behaviours>
-                <Behaviour name="friendly"/>
-                <Behaviour name="aggressive"/>
-            </Behaviours>
-        </Control>
-    </Controls>
     <Drivers>
         <Driver>
             <Name>MOTOR</Name>
