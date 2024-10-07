@@ -17,7 +17,7 @@ class CommandsParser:
                 paramName: str = param.attrib['name']
 
                 if paramName in params:
-                    raise RuntimeError(f'Command param "{paramName}" already defined')
+                    raise RuntimeError(f'[COMMAND] Command param "{paramName}" already defined')
 
                 params[paramName] = Param(
                     name=paramName,
@@ -26,7 +26,7 @@ class CommandsParser:
             commandName: str = command.find('Name').text
 
             if commandName in result:
-                raise RuntimeError(f'Command "{commandName}" already defined')
+                raise RuntimeError(f'[COMMAND] Command "{commandName}" already defined')
 
             result[commandName] = Command(
                 name=commandName,

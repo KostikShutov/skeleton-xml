@@ -1,11 +1,44 @@
 <?xml version="1.0"?>
 <Config>
+    <Algorithms>
+        <Algorithm>
+            <Name>MANUAL</Name>
+            <Commands>
+                <Command>FORWARD</Command>
+                <Command>BACKWARD</Command>
+                <Command>STOP</Command>
+                <Command>SECOND_STOP</Command>
+            </Commands>
+        </Algorithm>
+        <Algorithm>
+            <Name>EMPTY</Name>
+            <Commands>
+                <Command>ZERO</Command>
+            </Commands>
+        </Algorithm>
+    </Algorithms>
     <Commands>
         <Command>
             <Name>FORWARD</Name>
             <Params>
                 <Param name="speedFrom"/>
             </Params>
+        </Command>
+        <Command>
+            <Name>BACKWARD</Name>
+            <Params/>
+        </Command>
+        <Command>
+            <Name>STOP</Name>
+            <Params/>
+        </Command>
+        <Command>
+            <Name>SECOND_STOP</Name>
+            <Params/>
+        </Command>
+        <Command>
+            <Name>ZERO</Name>
+            <Params/>
         </Command>
     </Commands>
     <Drivers>
@@ -24,6 +57,34 @@
                 <Driver name="MOTOR">
                     <Params>
                         <Param paramFrom="speedFrom" paramTo="speedTo"/>
+                    </Params>
+                </Driver>
+            </Drivers>
+        </Interface>
+        <Interface>
+            <Command>BACKWARD</Command>
+            <Drivers>
+                <Driver name="NOT_FOUND">
+                    <Params/>
+                </Driver>
+            </Drivers>
+        </Interface>
+        <Interface>
+            <Command>STOP</Command>
+            <Drivers>
+                <Driver name="MOTOR">
+                    <Params>
+                        <Param paramFrom="notFoundFrom" paramTo="notFoundTo"/>
+                    </Params>
+                </Driver>
+            </Drivers>
+        </Interface>
+        <Interface>
+            <Command>SECOND_STOP</Command>
+            <Drivers>
+                <Driver name="MOTOR">
+                    <Params>
+                        <Param paramFrom="notFoundFrom" paramTo="speedTo"/>
                     </Params>
                 </Driver>
             </Drivers>

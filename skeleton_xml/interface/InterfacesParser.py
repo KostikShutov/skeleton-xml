@@ -21,7 +21,7 @@ class InterfacesParser:
                     paramTo: str = param.attrib['paramTo']
 
                     if paramTo in params:
-                        raise RuntimeError(f'Param to "{paramTo}" already defined')
+                        raise RuntimeError(f'[INTERFACE] Param to "{paramTo}" already defined')
 
                     params[paramTo] = Param(
                         paramFrom=param.attrib['paramFrom'],
@@ -31,7 +31,7 @@ class InterfacesParser:
                 inverName: str = driver.attrib['name']
 
                 if inverName in invers:
-                    raise RuntimeError(f'Inver "{inverName}" already defined')
+                    raise RuntimeError(f'[INTERFACE] Inver "{inverName}" already defined')
 
                 invers[inverName] = Inver(
                     name=inverName,
@@ -41,7 +41,7 @@ class InterfacesParser:
             commandName: str = interface.find('Command').text
 
             if commandName in result:
-                raise RuntimeError(f'Interface for command "{commandName}" already defined')
+                raise RuntimeError(f'[INTERFACE] Interface for command "{commandName}" already defined')
 
             result[commandName] = Interface(
                 command=commandName,

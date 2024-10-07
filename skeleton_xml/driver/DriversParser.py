@@ -17,7 +17,7 @@ class DriversParser:
                 paramName: str = param.attrib['name']
 
                 if paramName in result:
-                    raise RuntimeError(f'Driver param "{paramName}" already defined')
+                    raise RuntimeError(f'[DRIVER] Driver param "{paramName}" already defined')
 
                 params[paramName] = Param(
                     name=paramName,
@@ -26,7 +26,7 @@ class DriversParser:
             driverName: str = driver.find('Name').text
 
             if driverName in result:
-                raise RuntimeError(f'Driver "{driverName}" already defined')
+                raise RuntimeError(f'[DRIVER] Driver "{driverName}" already defined')
 
             result[driverName] = Driver(
                 name=driverName,
