@@ -22,6 +22,20 @@ class ConfigService:
         self.interfaces: dict[str, Interface] = InterfacesParser(root=root).parse()
 
     def execute(self, algorithmName: str, commandName: str, request: dict) -> any:
+        driver, payload = self.validate(algorithmName, commandName, request)
+        path: Path = Path(driver.module)
+        extension: str = path.suffix
+
+        if extension == '.py':
+            module: str = str(path.with_suffix('')).replace('/', '.')
+            className: str = path.stem
+            instance: object = getattr(importlib.import_module(module), className)()
+
+            return getattr(instance, driver.method)(**payload)
+
+        raise RuntimeError(f'[CONFIG] Extension "{extension}" not implemented')
+
+    def validate(self, algorithmName: str, commandName: str, request: dict) -> tuple[Driver, dict[str, any]]:
         algorithm: Algorithm = self.__getAlgorithm(algorithmName=algorithmName)
         command: Command = self.__getCommand(commandName=commandName)
 
@@ -46,20 +60,7 @@ class ConfigService:
 
                 payload[paramTo] = request[paramFrom]
 
-            return self.__doExecute(driver=driver, payload=payload)
-
-    def __doExecute(self, driver: Driver, payload: dict[str, any]) -> any:
-        path: Path = Path(driver.module)
-        extension: str = path.suffix
-
-        if extension == '.py':
-            module: str = str(path.with_suffix('')).replace('/', '.')
-            className: str = path.stem
-            instance: object = getattr(importlib.import_module(module), className)()
-
-            return getattr(instance, driver.method)(**payload)
-
-        raise RuntimeError(f'[CONFIG] Extension "{extension}" not implemented')
+            return driver, payload
 
     def __getAlgorithm(self, algorithmName: str) -> Algorithm:
         if algorithmName not in self.algorithms:
