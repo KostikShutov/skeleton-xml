@@ -44,7 +44,8 @@
     <Drivers>
         <Driver>
             <Name>MOTOR</Name>
-            <Module>tests.MotorDriver/MotorDriver/execute</Module>
+            <Module>tests/MotorDriver.py</Module>
+            <Method>execute</Method>
             <Params>
                 <Param name="speedTo"/>
             </Params>

@@ -1,5 +1,6 @@
 import importlib
 import xml.etree.ElementTree as ET
+from pathlib import Path
 from skeleton_xml.algorithm.Algorithm import Algorithm
 from skeleton_xml.algorithm.AlgorithmsParser import AlgorithmsParser
 from skeleton_xml.command.Command import Command
@@ -48,10 +49,17 @@ class ConfigService:
             return self.__doExecute(driver=driver, payload=payload)
 
     def __doExecute(self, driver: Driver, payload: dict[str, any]) -> any:
-        module, className, method = str.split(driver.module, '/')
-        instance: object = getattr(importlib.import_module(module), className)()
+        path: Path = Path(driver.module)
+        extension: str = path.suffix
 
-        return getattr(instance, method)(**payload)
+        if extension == '.py':
+            module: str = str(path.with_suffix('')).replace('/', '.')
+            className: str = path.stem
+            instance: object = getattr(importlib.import_module(module), className)()
+
+            return getattr(instance, driver.method)(**payload)
+
+        raise RuntimeError(f'[CONFIG] Extension "{extension}" not implemented')
 
     def __getAlgorithm(self, algorithmName: str) -> Algorithm:
         if algorithmName not in self.algorithms:

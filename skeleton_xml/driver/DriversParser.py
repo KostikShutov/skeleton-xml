@@ -31,6 +31,7 @@ class DriversParser:
             result[driverName] = Driver(
                 name=driverName,
                 module=driver.find('Module').text,
+                method=driver.find('Method').text,
                 params=params,
             )
 

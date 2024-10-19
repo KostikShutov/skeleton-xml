@@ -20,7 +20,8 @@ class DriversParserTest(unittest.TestCase):
             {
                 'MOTOR': Driver(
                     name='MOTOR',
-                    module='tests.MotorDriver/MotorDriver/execute',
+                    module='tests/MotorDriver.py',
+                    method='execute',
                     params={
                         'speedTo': Param(
                             name='speedTo',
