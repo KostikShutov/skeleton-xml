@@ -101,6 +101,16 @@ class ConfigServiceTest(unittest.TestCase):
             '[REQUEST] From parameter "speedFrom" for command "FORWARD" not passed' == str(context.exception),
             context.exception)
 
+    def testExtensionNotImplemented(self) -> None:
+        with self.assertRaises(RuntimeError) as context:
+            self.__createConfigService('test.xml').execute(
+                algorithmName='MANUAL',
+                commandName='TURN',
+                request={},
+            )
+
+        self.assertTrue('[CONFIG] Extension ".php" not implemented' == str(context.exception), context.exception)
+
     def __createConfigService(self, file: str) -> ConfigService:
         path: str = os.path.dirname(os.path.realpath(__file__)) + '/' + file
 

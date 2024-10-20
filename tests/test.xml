@@ -8,6 +8,7 @@
                 <Command>BACKWARD</Command>
                 <Command>STOP</Command>
                 <Command>SECOND_STOP</Command>
+                <Command>TURN</Command>
             </Commands>
         </Algorithm>
         <Algorithm>
@@ -40,6 +41,10 @@
             <Name>ZERO</Name>
             <Params/>
         </Command>
+        <Command>
+            <Name>TURN</Name>
+            <Params/>
+        </Command>
     </Commands>
     <Drivers>
         <Driver>
@@ -49,6 +54,12 @@
             <Params>
                 <Param name="speedTo"/>
             </Params>
+        </Driver>
+        <Driver>
+            <Name>SERVO</Name>
+            <Module>tests/ServoDriver.php</Module>
+            <Method>execute</Method>
+            <Params/>
         </Driver>
     </Drivers>
     <Interfaces>
@@ -87,6 +98,14 @@
                     <Params>
                         <Param paramFrom="notFoundFrom" paramTo="speedTo"/>
                     </Params>
+                </Driver>
+            </Drivers>
+        </Interface>
+        <Interface>
+            <Command>TURN</Command>
+            <Drivers>
+                <Driver name="SERVO">
+                    <Params/>
                 </Driver>
             </Drivers>
         </Interface>
