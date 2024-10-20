@@ -29,10 +29,56 @@ class InterfaceParserTest(unittest.TestCase):
                                     paramFrom='speedFrom',
                                     paramTo='speedTo',
                                 ),
-                            }
+                            },
                         ),
-                    }
-                )
+                    },
+                ),
+                'BACKWARD': Interface(
+                    command='BACKWARD',
+                    invers={
+                        'NOT_FOUND': Inver(
+                            name='NOT_FOUND',
+                            params={},
+                        ),
+                    },
+                ),
+                'STOP': Interface(
+                    command='STOP',
+                    invers={
+                        'MOTOR': Inver(
+                            name='MOTOR',
+                            params={
+                                'notFoundTo': Param(
+                                    paramFrom='notFoundFrom',
+                                    paramTo='notFoundTo',
+                                ),
+                            },
+                        ),
+                    },
+                ),
+                'SECOND_STOP': Interface(
+                    command='SECOND_STOP',
+                    invers={
+                        'MOTOR': Inver(
+                            name='MOTOR',
+                            params={
+                                'speedTo': Param(
+                                    paramFrom='notFoundFrom',
+                                    paramTo='speedTo',
+                                ),
+                            },
+                        ),
+                    },
+                ),
+                'TURN': Interface(
+                    command='TURN',
+                    invers={
+                        'SERVO': Inver(
+                            name='SERVO',
+                            params={},
+                        ),
+                    },
+                ),
             },
             actual,
         )

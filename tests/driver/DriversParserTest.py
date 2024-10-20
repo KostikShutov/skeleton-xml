@@ -26,8 +26,14 @@ class DriversParserTest(unittest.TestCase):
                         'speedTo': Param(
                             name='speedTo',
                         ),
-                    }
-                )
+                    },
+                ),
+                'SERVO': Driver(
+                    name='SERVO',
+                    module='tests/ServoDriver.php',
+                    method='execute',
+                    params={},
+                ),
             },
             actual,
         )

@@ -24,6 +24,26 @@ class AlgorithmsParserTest(unittest.TestCase):
                         'FORWARD': Command(
                             name='FORWARD',
                         ),
+                        'BACKWARD': Command(
+                            name='BACKWARD',
+                        ),
+                        'STOP': Command(
+                            name='STOP',
+                        ),
+                        'SECOND_STOP': Command(
+                            name='SECOND_STOP',
+                        ),
+                        'TURN': Command(
+                            name='TURN',
+                        ),
+                    },
+                ),
+                'EMPTY': Algorithm(
+                    name='EMPTY',
+                    commands={
+                        'ZERO': Command(
+                            name='ZERO',
+                        ),
                     },
                 ),
             },

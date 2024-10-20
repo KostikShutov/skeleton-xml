@@ -26,6 +26,26 @@ class CommandsParserTest(unittest.TestCase):
                         ),
                     },
                 ),
+                'BACKWARD': Command(
+                    name='BACKWARD',
+                    params={},
+                ),
+                'STOP': Command(
+                    name='STOP',
+                    params={},
+                ),
+                'SECOND_STOP': Command(
+                    name='SECOND_STOP',
+                    params={},
+                ),
+                'ZERO': Command(
+                    name='ZERO',
+                    params={},
+                ),
+                'TURN': Command(
+                    name='TURN',
+                    params={},
+                ),
             },
             actual,
         )
