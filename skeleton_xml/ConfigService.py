@@ -1,5 +1,6 @@
 import importlib
 import xml.etree.ElementTree as ET
+from types import ModuleType
 from pathlib import Path
 from skeleton_xml.algorithm.Algorithm import Algorithm
 from skeleton_xml.algorithm.AlgorithmsParser import AlgorithmsParser
@@ -28,8 +29,10 @@ class ConfigService:
 
         if extension == '.py':
             module: str = str(path.with_suffix('')).replace('/', '.')
+            module: ModuleType = importlib.import_module(module)
+            module: ModuleType = importlib.reload(module)
             className: str = path.stem
-            instance: object = getattr(importlib.import_module(module), className)()
+            instance: object = getattr(module, className)()
 
             return getattr(instance, algorithm.method)()
 
