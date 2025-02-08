@@ -2,7 +2,6 @@ import os
 import unittest
 import xml.etree.ElementTree as ET
 from skeleton_xml.algorithm.Algorithm import Algorithm
-from skeleton_xml.algorithm.Command import Command
 from skeleton_xml.algorithm.AlgorithmsParser import AlgorithmsParser
 
 
@@ -18,33 +17,10 @@ class AlgorithmsParserTest(unittest.TestCase):
 
         self.assertEqual(
             {
-                'MANUAL': Algorithm(
-                    name='MANUAL',
-                    commands={
-                        'FORWARD': Command(
-                            name='FORWARD',
-                        ),
-                        'BACKWARD': Command(
-                            name='BACKWARD',
-                        ),
-                        'STOP': Command(
-                            name='STOP',
-                        ),
-                        'SECOND_STOP': Command(
-                            name='SECOND_STOP',
-                        ),
-                        'TURN': Command(
-                            name='TURN',
-                        ),
-                    },
-                ),
-                'EMPTY': Algorithm(
-                    name='EMPTY',
-                    commands={
-                        'ZERO': Command(
-                            name='ZERO',
-                        ),
-                    },
+                'AUTO': Algorithm(
+                    name='AUTO',
+                    module='tests/AutoAlgorithm.py',
+                    method='execute',
                 ),
             },
             actual,

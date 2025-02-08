@@ -31,6 +31,15 @@ class InterfaceParserTest(unittest.TestCase):
                                 ),
                             },
                         ),
+                        'SECOND_MOTOR': Inver(
+                            name='SECOND_MOTOR',
+                            params={
+                                'speedTo': Param(
+                                    paramFrom='speedFrom',
+                                    paramTo='speedTo',
+                                ),
+                            },
+                        ),
                     },
                 ),
                 'BACKWARD': Interface(

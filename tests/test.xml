@@ -2,20 +2,9 @@
 <Config>
     <Algorithms>
         <Algorithm>
-            <Name>MANUAL</Name>
-            <Commands>
-                <Command>FORWARD</Command>
-                <Command>BACKWARD</Command>
-                <Command>STOP</Command>
-                <Command>SECOND_STOP</Command>
-                <Command>TURN</Command>
-            </Commands>
-        </Algorithm>
-        <Algorithm>
-            <Name>EMPTY</Name>
-            <Commands>
-                <Command>ZERO</Command>
-            </Commands>
+            <Name>AUTO</Name>
+            <Module>tests/AutoAlgorithm.py</Module>
+            <Method>execute</Method>
         </Algorithm>
     </Algorithms>
     <Commands>
@@ -50,7 +39,15 @@
         <Driver>
             <Name>MOTOR</Name>
             <Module>tests/MotorDriver.py</Module>
-            <Method>execute</Method>
+            <Method>executeFirst</Method>
+            <Params>
+                <Param name="speedTo"/>
+            </Params>
+        </Driver>
+        <Driver>
+            <Name>SECOND_MOTOR</Name>
+            <Module>tests/MotorDriver.py</Module>
+            <Method>executeSecond</Method>
             <Params>
                 <Param name="speedTo"/>
             </Params>
@@ -67,6 +64,11 @@
             <Command>FORWARD</Command>
             <Drivers>
                 <Driver name="MOTOR">
+                    <Params>
+                        <Param paramFrom="speedFrom" paramTo="speedTo"/>
+                    </Params>
+                </Driver>
+                <Driver name="SECOND_MOTOR">
                     <Params>
                         <Param paramFrom="speedFrom" paramTo="speedTo"/>
                     </Params>

@@ -21,9 +21,9 @@ class ConfigService:
         self.drivers: dict[str, Driver] = DriversParser(root=root).parse()
         self.interfaces: dict[str, Interface] = InterfacesParser(root=root).parse()
 
-    def execute(self, algorithmName: str, commandName: str, request: dict) -> any:
-        driver, payload = self.validate(algorithmName, commandName, request)
-        path: Path = Path(driver.module)
+    def executeAlgorithm(self, algorithmName: str) -> any:
+        algorithm: Algorithm = self.__getAlgorithm(algorithmName=algorithmName)
+        path: Path = Path(algorithm.module)
         extension: str = path.suffix
 
         if extension == '.py':
@@ -31,16 +31,31 @@ class ConfigService:
             className: str = path.stem
             instance: object = getattr(importlib.import_module(module), className)()
 
-            return getattr(instance, driver.method)(**payload)
+            return getattr(instance, algorithm.method)()
 
         raise RuntimeError(f'[CONFIG] Extension "{extension}" not implemented')
 
-    def validate(self, algorithmName: str, commandName: str, request: dict) -> tuple[Driver, dict[str, any]]:
-        algorithm: Algorithm = self.__getAlgorithm(algorithmName=algorithmName)
-        command: Command = self.__getCommand(commandName=commandName)
+    def executeCommand(self, commandName: str, request: dict) -> list[any]:
+        drivers: list[tuple[Driver, dict[str, any]]] = self.validateAndGetDrivers(commandName, request)
+        result: list[any] = []
 
-        if commandName not in algorithm.commands:
-            raise RuntimeError(f'[REQUEST] Command "{commandName}" not available for algorithm "{algorithmName}"')
+        for driver, payload in drivers:
+            path: Path = Path(driver.module)
+            extension: str = path.suffix
+
+            if extension == '.py':
+                module: str = str(path.with_suffix('')).replace('/', '.')
+                className: str = path.stem
+                instance: object = getattr(importlib.import_module(module), className)()
+                result.append(getattr(instance, driver.method)(**payload))
+            else:
+                raise RuntimeError(f'[CONFIG] Extension "{extension}" not implemented')
+
+        return result
+
+    def validateAndGetDrivers(self, commandName: str, request: dict) -> list[tuple[Driver, dict[str, any]]]:
+        command: Command = self.__getCommand(commandName=commandName)
+        drivers: list[tuple[Driver, dict[str, any]]] = []
 
         for _, inver in self.__getInvers(commandName=commandName).items():
             driver: Driver = self.__getDriver(inverName=inver.name)
@@ -60,7 +75,9 @@ class ConfigService:
 
                 payload[paramTo] = request[paramFrom]
 
-            return driver, payload
+            drivers.append((driver, payload))
+
+        return drivers
 
     def __getAlgorithm(self, algorithmName: str) -> Algorithm:
         if algorithmName not in self.algorithms:

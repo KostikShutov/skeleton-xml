@@ -4,52 +4,43 @@ from skeleton_xml.ConfigService import ConfigService
 
 
 class ConfigServiceTest(unittest.TestCase):
-    def testOk(self) -> None:
-        actual: int = self.__createConfigService('test.xml').execute(
-            algorithmName='MANUAL',
+    def testAlgorithmOk(self) -> None:
+        actual: int = self.__createConfigService('test.xml').executeAlgorithm(
+            algorithmName='AUTO',
+        )
+
+        self.assertEqual(77, actual)
+
+    def testAlgorithmNotFound(self) -> None:
+        with self.assertRaises(RuntimeError) as context:
+            self.__createConfigService('test.xml').executeAlgorithm(
+                algorithmName='NOT_FOUND',
+            )
+
+        self.assertTrue('[REQUEST] Algorithm "NOT_FOUND" not found' == str(context.exception), context.exception)
+
+    def testCommandOk(self) -> None:
+        actual: list[int] = self.__createConfigService('test.xml').executeCommand(
             commandName='FORWARD',
             request={
                 'speedFrom': 33,
             },
         )
 
-        self.assertEqual(33, actual)
-
-    def testAlgorithmNotFound(self) -> None:
-        with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='NOT_FOUND',
-                commandName='FORWARD',
-                request={},
-            )
-
-        self.assertTrue('[REQUEST] Algorithm "NOT_FOUND" not found' == str(context.exception), context.exception)
+        self.assertEqual([33, 66], actual)
 
     def testCommandNotFound(self) -> None:
         with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='MANUAL',
+            self.__createConfigService('test.xml').executeCommand(
                 commandName='NOT_FOUND',
                 request={},
             )
 
         self.assertTrue('[REQUEST] Command "NOT_FOUND" not found' == str(context.exception), context.exception)
 
-    def testCommandNotAvailableForAlgorithm(self) -> None:
-        with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='EMPTY',
-                commandName='FORWARD',
-                request={},
-            )
-
-        self.assertTrue('[REQUEST] Command "FORWARD" not available for algorithm "EMPTY"' == str(context.exception),
-                        context.exception)
-
     def testInterfaceNotFound(self) -> None:
         with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='EMPTY',
+            self.__createConfigService('test.xml').executeCommand(
                 commandName='ZERO',
                 request={},
             )
@@ -58,8 +49,7 @@ class ConfigServiceTest(unittest.TestCase):
 
     def testDriverNotFound(self) -> None:
         with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='MANUAL',
+            self.__createConfigService('test.xml').executeCommand(
                 commandName='BACKWARD',
                 request={},
             )
@@ -68,8 +58,7 @@ class ConfigServiceTest(unittest.TestCase):
 
     def testParamToNotFound(self) -> None:
         with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='MANUAL',
+            self.__createConfigService('test.xml').executeCommand(
                 commandName='STOP',
                 request={},
             )
@@ -79,8 +68,7 @@ class ConfigServiceTest(unittest.TestCase):
 
     def testParamFromNotFound(self) -> None:
         with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='MANUAL',
+            self.__createConfigService('test.xml').executeCommand(
                 commandName='SECOND_STOP',
                 request={},
             )
@@ -91,8 +79,7 @@ class ConfigServiceTest(unittest.TestCase):
 
     def testParamNotPassed(self) -> None:
         with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='MANUAL',
+            self.__createConfigService('test.xml').executeCommand(
                 commandName='FORWARD',
                 request={},
             )
@@ -103,8 +90,7 @@ class ConfigServiceTest(unittest.TestCase):
 
     def testExtensionNotImplemented(self) -> None:
         with self.assertRaises(RuntimeError) as context:
-            self.__createConfigService('test.xml').execute(
-                algorithmName='MANUAL',
+            self.__createConfigService('test.xml').executeCommand(
                 commandName='TURN',
                 request={},
             )

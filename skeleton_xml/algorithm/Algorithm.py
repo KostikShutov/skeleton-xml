@@ -1,21 +1,22 @@
-from skeleton_xml.algorithm.Command import Command
-
-
 class Algorithm:
-    def __init__(self, name: str, commands: dict[str, Command]) -> None:
+    def __init__(self, name: str, module: str, method: str) -> None:
         self.name = name
-        self.commands = commands
+        self.module = module
+        self.method = method
 
     def __eq__(self, other) -> bool:
         return self.name == other.name \
-            and self.commands == other.commands
+            and self.module == other.module \
+            and self.method == other.method
 
     def __repr__(self) -> str:
         return '(' + str(self.name) \
-            + ', ' + str(self.commands) \
+            + ', ' + str(self.module) \
+            + ', ' + str(self.method) \
             + ')'
 
     def __str__(self) -> str:
         return '(name: ' + str(self.name) \
-            + ', commands: ' + str(self.commands) \
+            + ', module: ' + str(self.module) \
+            + ', method: ' + str(self.method) \
             + ')'
