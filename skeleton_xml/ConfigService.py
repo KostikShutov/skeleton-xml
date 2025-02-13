@@ -22,7 +22,7 @@ class ConfigService:
         self.drivers: dict[str, Driver] = DriversParser(root=root).parse()
         self.interfaces: dict[str, Interface] = InterfacesParser(root=root).parse()
 
-    def executeAlgorithm(self, algorithmName: str) -> any:
+    def executeAlgorithm(self, algorithmName: str, entry: dict = {}) -> any:
         algorithm: Algorithm = self.__getAlgorithm(algorithmName=algorithmName)
         path: Path = Path(algorithm.module)
         extension: str = path.suffix
@@ -32,13 +32,13 @@ class ConfigService:
             module: ModuleType = importlib.import_module(module)
             module: ModuleType = importlib.reload(module)
             className: str = path.stem
-            instance: object = getattr(module, className)()
+            instance: object = getattr(module, className)(entry=entry)
 
             return getattr(instance, algorithm.method)()
 
         raise RuntimeError(f'[CONFIG] Extension "{extension}" not implemented')
 
-    def executeCommand(self, commandName: str, request: dict) -> list[any]:
+    def executeCommand(self, commandName: str, request: dict, entry: dict = {}) -> list[any]:
         drivers: list[tuple[Driver, dict[str, any]]] = self.validateAndGetDrivers(commandName, request)
         result: list[any] = []
 
@@ -49,7 +49,7 @@ class ConfigService:
             if extension == '.py':
                 module: str = str(path.with_suffix('')).replace('/', '.')
                 className: str = path.stem
-                instance: object = getattr(importlib.import_module(module), className)()
+                instance: object = getattr(importlib.import_module(module), className)(entry=entry)
                 result.append(getattr(instance, driver.method)(**payload))
             else:
                 raise RuntimeError(f'[CONFIG] Extension "{extension}" not implemented')
